@@ -9,10 +9,11 @@ interface Props {
     selectedImages: GridImage[]
     onSelect: (id: string, src: string) => void
     onRemove: (id: string) => void
+    disabled?: boolean
 }
 
 export default function ImageCard(props: Props) {
-    const {url, id, onSelect, onRemove, selectedImages} = props
+    const {url, id, onSelect, onRemove, selectedImages, disabled} = props
 
     const isImageSelected = () => {
         return selectedImages.filter((image) => image.id == id).length > 0;
@@ -36,7 +37,7 @@ export default function ImageCard(props: Props) {
                     <CardContent>
                         <Box sx={{justifyContent: "space-between"}} flexGrow={1} display="flex">
                             <Button variant="contained" sx={{marginRight: '10px'}} size={'small'}
-                                    disabled={isSelected} onClick={() => onSelect(id, url)}>Select</Button>
+                                    disabled={isSelected || disabled} onClick={() => onSelect(id, url)}>Select</Button>
                             <Button variant="contained" color="error" size={'small'}
                                     disabled={!isSelected} onClick={() => onRemove(id)}>Remove</Button>
                         </Box>

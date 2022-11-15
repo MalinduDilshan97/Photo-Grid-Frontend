@@ -158,7 +158,7 @@ const PhotoFrameGrid = (props: PhotoFrameGridProps) => {
             onDragEnd={handleDragEnd}
         >
             <SortableContext items={photos}>
-                <PhotoAlbum photos={photos} layout="rows" spacing={20} padding={15} renderPhoto={renderPhoto}/>
+                <PhotoAlbum photos={photos} layout="masonry" spacing={20} padding={15} renderPhoto={renderPhoto}/>
             </SortableContext>
             <DragOverlay>{activeId && <PhotoFrame overlay {...renderedPhotos.current[activeId]} />}</DragOverlay>
         </DndContext>

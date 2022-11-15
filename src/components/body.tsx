@@ -16,7 +16,7 @@ export default function Body() {
         axios.get(BASE_PHOTO_URL).then(response => {
             setImages(response.data.entries)
         }).catch((error: any) => {
-            alert("Something went wrong");
+            alert("Something went wrong! \nMake Sure CORS Extension is Turned On\nSee README file for more details");
             console.log(error)
         })
     }, [])
@@ -49,7 +49,7 @@ export default function Body() {
         axios
             .post(`${BASE_BACKEND_URL}/image/create`, {images: images}, config)
             .then(() => {
-                alert("upload Complete");
+                alert("Images saved successfully");
             })
             .catch(() => {
                 alert("Something went wrong");
@@ -59,7 +59,7 @@ export default function Body() {
     return images && (
         <>
             <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 4, sm: 8, md: 15}} paddingLeft={'10px'}
-                  paddingRight={'10px'} paddingBottom={selectedImages.length > 0 ? '370px' : '50px'}>
+                  paddingRight={'10px'} paddingBottom={selectedImages.length > 0 ? '440px' : '50px'}>
                 {images.map((image, index) => (
                     <Grid item xs={2} sm={4} md={3} key={index}>
                         <ImageCard
@@ -68,6 +68,7 @@ export default function Body() {
                             selectedImages={selectedImages}
                             onSelect={onSelect}
                             onRemove={onRemove}
+                            disabled={selectedImages.length == 9}
                         />
                     </Grid>
                 ))}
@@ -87,7 +88,8 @@ export default function Body() {
                         <PhotoFrameGrid selectedPhotos={selectedImages}/>
                     </BottomNavigation>
                     <Button variant="contained" color="success" size={'small'}
-                            sx={{marginBottom: '5px', marginTop: '5px'}} onClick={onClickSaveOrder}>Save Order</Button>
+                            sx={{marginBottom: '5px', marginTop: '5px'}} onClick={onClickSaveOrder}>Save Selected
+                        Images</Button>
                 </Paper>
             )}
         </>
