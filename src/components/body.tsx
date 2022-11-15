@@ -1,7 +1,7 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {BottomNavigation, Grid, Paper} from "@mui/material";
-import {BASE_PHOTO_URL} from "../constants/constants";
+import {BottomNavigation, Button, Grid, Paper, Typography} from "@mui/material";
+import {BASE_BACKEND_URL, BASE_PHOTO_URL} from "../constants/constants";
 import ImageCard from "./image-card";
 import PhotoFrameGrid from "./image-grid/photo-frame-grid";
 import {getImage, GridImage, ImageDetails} from "../services/photo-helper";
@@ -30,6 +30,32 @@ export default function Body() {
         setSelectedImages(tempArray);
     }
 
+    const onClickSaveOrder = () => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        const images = (selectedImages).map((image) => ({
+            imageId: image.id.toString(),
+            src: image.src,
+            index: selectedImages.findIndex(x => {
+                return x.id === image.id
+            }),
+            userId: 'malindu1997'
+        }))
+
+        axios
+            .post(`${BASE_BACKEND_URL}/image/create`, {images: images}, config)
+            .then(() => {
+                alert("upload Complete");
+            })
+            .catch(() => {
+                alert("Something went wrong");
+            });
+    }
+
     return images && (
         <>
             <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 4, sm: 8, md: 15}} paddingLeft={'10px'}
@@ -54,9 +80,14 @@ export default function Body() {
                     right: 0,
                     paddingTop: '10px'
                 }} variant="outlined">
+                    <Typography variant="overline" display="block" gutterBottom>
+                        Drag and Drop Images to Oder
+                    </Typography>
                     <BottomNavigation sx={{height: '350px', flex: 1, overflowY: 'auto'}}>
                         <PhotoFrameGrid selectedPhotos={selectedImages}/>
                     </BottomNavigation>
+                    <Button variant="contained" color="success" size={'small'}
+                            sx={{marginBottom: '5px', marginTop: '5px'}} onClick={onClickSaveOrder}>Save Order</Button>
                 </Paper>
             )}
         </>
