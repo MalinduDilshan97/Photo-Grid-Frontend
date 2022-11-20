@@ -1,20 +1,28 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {BottomNavigation, Button, Grid, Paper, Typography} from "@mui/material";
-import {BASE_BACKEND_URL, BASE_PHOTO_URL} from "../constants/constants";
+import {BASE_BACKEND_URL, BASE_PHOTO_URL, NASA_IMAGE_URL} from "../constants/constants";
 import ImageCard from "./image-card";
 import PhotoFrameGrid from "./image-grid/photo-frame-grid";
-import {getImage, GridImage, ImageDetails} from "../services/photo-helper";
+import {getImage, GridImage, ImageDetails, NasaImageURL} from "../services/photo-helper";
 
 export default function Body() {
 
     const [images, setImages] = useState<ImageDetails[]>([]);
+    const [nasaURLS, setNasaURLS] = useState<NasaImageURL[]>([]);
     const [selectedImages, setSelectedImages] = useState<GridImage[]>([]);
 
     useEffect(() => {
         // fetch images from the server
         axios.get(BASE_PHOTO_URL).then(response => {
             setImages(response.data.entries)
+        }).catch((error: any) => {
+            alert("Something went wrong! \nMake Sure CORS Extension is Turned On\nSee README file for more details");
+            console.log(error)
+        })
+
+        axios.get(NASA_IMAGE_URL).then(response => {
+            setNasaURLS(response.data)
         }).catch((error: any) => {
             alert("Something went wrong! \nMake Sure CORS Extension is Turned On\nSee README file for more details");
             console.log(error)
@@ -64,7 +72,7 @@ export default function Body() {
                     <Grid item xs={2} sm={4} md={3} key={index}>
                         <ImageCard
                             id={image.id}
-                            url={image.picture}
+                            url={nasaURLS[index]?.url}
                             selectedImages={selectedImages}
                             onSelect={onSelect}
                             onRemove={onRemove}

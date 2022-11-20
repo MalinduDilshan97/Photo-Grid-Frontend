@@ -5,11 +5,15 @@ export interface ImageDetails {
     picture: string
 }
 
-export interface GridImage extends Photo{
+export interface NasaImageURL {
+    url: string
+}
+
+export interface GridImage extends Photo {
     id: string,
 }
 
-export const getImage = (id: string, src: string) : GridImage =>{
+export const getImage = (id: string, src: string): GridImage => {
     return {
         id: id,
         src: src,
